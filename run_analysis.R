@@ -31,27 +31,27 @@ X_test <- X_test[,extract_features]
 X_train <- X_train[,extract_features]
 
 # load labels
-Y_test[,2] = activity_labels[Y_test[,1]]
-names(Y_test) = c("Activity_ID", "Activity_Label")
-names(subject_test) = "subject"
+Y_test[,2] <- activity_labels[Y_test[,1]]
+names(Y_test) <- c("Activity_ID", "Activity_Label")
+names(subject_test) <- "subject"
 
-Y_train[,2] = activity_labels[Y_train[,1]]
-names(Y_train) = c("Activity_ID", "Activity_Label")
-names(subject_train) = "subject"
+Y_train[,2] <- activity_labels[Y_train[,1]]
+names(Y_train) <- c("Activity_ID", "Activity_Label")
+names(subject_train) <- "subject"
 
 # merge x y datasets
 test_data <- cbind(as.data.table(subject_test), Y_test, X_test)
 train_data <- cbind(as.data.table(subject_train), Y_train, X_train)
 
 # merge test train data
-data = rbind(test_data, train_data)
+data <- rbind(test_data, train_data)
 
-id_labels   = c("subject", "Activity_ID", "Activity_Label")
-data_labels = setdiff(colnames(data), id_labels)
-melt_data      = melt(data, id = id_labels, measure.vars = data_labels)
+id_labels <- c("subject", "Activity_ID", "Activity_Label")
+data_labels <- setdiff(colnames(data), id_labels)
+melt_data <- melt(data, id = id_labels, measure.vars = data_labels)
 
 # average dataset
-tidy_data   = dcast(melt_data, subject + Activity_Label ~ variable, mean)
+tidy_data <- dcast(melt_data, subject + Activity_Label ~ variable, mean)
 
 # write final tidy data to file
-write.table(tidy_data, file = "./tidy_data.txt")
+write.table(tidy_data, file = "./tidy_data.txt", row.names = FALSE)
